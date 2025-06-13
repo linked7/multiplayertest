@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0w5ohhabd8kp"]
+
+[ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://btvu00rb52ab5" path="res://assets/menu.png" id="2_0xm2m"]
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+ambient_light_source = 3
+ambient_light_color = Color(0.877478, 0.91884, 1, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="MultiplayerManager" type="Node" parent="."]
+script = ExtResource("1_ig7tw")
+
+[node name="MainMenu" type="CanvasLayer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="MainMenu"]
+position = Vector2(576, 324)
+texture = ExtResource("2_0xm2m")
+
+[node name="HostPlayer" type="Button" parent="MainMenu/Sprite2D"]
+offset_left = -418.0
+offset_top = -109.0
+offset_right = -228.0
+offset_bottom = -41.0
+text = "Host as Player
+"
+
+[node name="HostServer" type="Button" parent="MainMenu/Sprite2D"]
+offset_left = -418.0
+offset_top = 58.0
+offset_right = -228.0
+offset_bottom = 129.0
+text = "Host as Server"
+
+[node name="Connect" type="Button" parent="MainMenu/Sprite2D"]
+offset_left = -418.0
+offset_top = -27.0
+offset_right = -228.0
+offset_bottom = 46.0
+text = "Connect"
+
+[node name="InputIP" type="LineEdit" parent="MainMenu/Sprite2D"]
+offset_left = -204.0
+offset_top = 58.0
+offset_right = 19.0
+offset_bottom = 104.0
+text = "127.0.0.1"
+placeholder_text = "Input IP"
+
+[node name="InputPort" type="LineEdit" parent="MainMenu/Sprite2D"]
+offset_left = 40.0
+offset_top = 58.0
+offset_right = 109.0
+offset_bottom = 101.0
+text = "22223"
+placeholder_text = "IP Adress"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0xm2m")
+
+[connection signal="pressed" from="MainMenu/Sprite2D/HostPlayer" to="MultiplayerManager" method="_on_host_player_pressed"]
+[connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
+[connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]
