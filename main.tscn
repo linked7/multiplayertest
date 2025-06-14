@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=17 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
 [ext_resource type="Texture2D" uid="uid://btvu00rb52ab5" path="res://assets/menu.png" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://crx0wmadrl6ty" path="res://addons/zylann.hterrain/hterrain.gd" id="3_ycdy4"]
 [ext_resource type="Resource" uid="uid://cxr84ofrej1as" path="res://terrain_data/data.hterrain" id="4_w48qg"]
@@ -25,6 +26,7 @@ mode = 0
 textures = [[ExtResource("6_2cqfq"), ExtResource("7_yaehf"), ExtResource("8_074og"), ExtResource("9_cegan")], [ExtResource("10_82xsv"), ExtResource("11_getpj"), ExtResource("12_ryguw"), ExtResource("13_d13ii")]]
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_w48qg")
 
 [node name="MultiplayerManager" type="Node" parent="."]
 script = ExtResource("1_ig7tw")

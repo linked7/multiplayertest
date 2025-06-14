@@ -1,8 +1,8 @@
 extends CharacterBody3D
 
 var speed
-const SPEED_SPRINT = 4.0
-const SPEED_WALK = 2.0
+const SPEED_SPRINT = 8.0
+const SPEED_WALK = 4.0
 const JUMP_VELOCITY = 2.25
 const SENSITIVITY = 0.003
 
@@ -27,12 +27,12 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
-	
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		head.rotate_y(-event.relative.x * SENSITIVITY)
 		camera.rotate_x(-event.relative.y * SENSITIVITY)
-
+		
 func _physics_process(delta: float) -> void:
 	
 	if not is_multiplayer_authority():
