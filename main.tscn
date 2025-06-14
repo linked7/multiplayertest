@@ -43,15 +43,15 @@ text = "Connect"
 [node name="InputIP" type="LineEdit" parent="MainMenu/Sprite2D"]
 offset_left = -204.0
 offset_top = 58.0
-offset_right = 19.0
-offset_bottom = 104.0
+offset_right = -59.0
+offset_bottom = 101.0
 text = "127.0.0.1"
 placeholder_text = "Input IP"
 
 [node name="InputPort" type="LineEdit" parent="MainMenu/Sprite2D"]
-offset_left = 40.0
+offset_left = -37.0
 offset_top = 58.0
-offset_right = 109.0
+offset_right = 32.0
 offset_bottom = 101.0
 text = "22223"
 placeholder_text = "IP Adress"
