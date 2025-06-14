@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 MultiplayerManager="*res://multiplayer_manager.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/zylann.hterrain/plugin.cfg")
+
 [input]
 
 move_jump={

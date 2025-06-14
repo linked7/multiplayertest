@@ -1,11 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=16 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://btvu00rb52ab5" path="res://assets/menu.png" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://crx0wmadrl6ty" path="res://addons/zylann.hterrain/hterrain.gd" id="3_ycdy4"]
+[ext_resource type="Resource" uid="uid://cxr84ofrej1as" path="res://terrain_data/data.hterrain" id="4_w48qg"]
+[ext_resource type="Script" uid="uid://dbde1sq4t4ixc" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_vivmo"]
+[ext_resource type="Texture2D" uid="uid://bqv6pck1efrsv" path="res://terrain_textures/slot0_albedo_bump.png" id="6_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://bngpa07xqe5gy" path="res://terrain_textures/slot1_albedo_bump.png" id="7_yaehf"]
+[ext_resource type="Texture2D" uid="uid://ciuq5xqlljar2" path="res://terrain_textures/slot2_albedo_bump.png" id="8_074og"]
+[ext_resource type="Texture2D" uid="uid://cc7wu6flk7trn" path="res://terrain_textures/slot3_albedo_bump.png" id="9_cegan"]
+[ext_resource type="Texture2D" uid="uid://bpqk33adva8su" path="res://terrain_textures/slot0_normal_roughness.png" id="10_82xsv"]
+[ext_resource type="Texture2D" uid="uid://cvyx0y0h8qyp8" path="res://terrain_textures/slot1_normal_roughness.png" id="11_getpj"]
+[ext_resource type="Texture2D" uid="uid://hiofdljtyvye" path="res://terrain_textures/slot2_normal_roughness.png" id="12_ryguw"]
+[ext_resource type="Texture2D" uid="uid://c7yyb4hrpjf16" path="res://terrain_textures/slot3_normal_roughness.png" id="13_d13ii"]
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 ambient_light_source = 3
 ambient_light_color = Color(0.877478, 0.91884, 1, 1)
+tonemap_mode = 2
+
+[sub_resource type="Resource" id="Resource_1u8w0"]
+script = ExtResource("5_vivmo")
+mode = 0
+textures = [[ExtResource("6_2cqfq"), ExtResource("7_yaehf"), ExtResource("8_074og"), ExtResource("9_cegan")], [ExtResource("10_82xsv"), ExtResource("11_getpj"), ExtResource("12_ryguw"), ExtResource("13_d13ii")]]
 
 [node name="Main" type="Node3D"]
 
@@ -58,6 +75,29 @@ placeholder_text = "IP Adress"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0xm2m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 0, 0)
+
+[node name="HTerrain" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -500, 0, -500)
+script = ExtResource("3_ycdy4")
+_terrain_data = ExtResource("4_w48qg")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_1u8w0")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+metadata/_custom_type_script = "uid://crx0wmadrl6ty"
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostPlayer" to="MultiplayerManager" method="_on_host_player_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
