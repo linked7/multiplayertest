@@ -22,7 +22,8 @@ func _ready():
 func spawn_player(peer_id: int):
 	print("Player Spawned!")
 	var player = player_scene.instantiate()
-	add_child(player)
+	$"..".call_deferred("add_child", player)
+
 	player.set_multiplayer_authority(peer_id)
 	$"../MainMenu".hide()
 
