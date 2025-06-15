@@ -44,12 +44,14 @@ func join_server(ip: String, port: int = 22223):
 	multiplayer.multiplayer_peer = peer
 	print("Joining server at %s:%d" % [ip, port])
 	client_connected.emit()
-
+		
 # NETWORKING POSTCALLS
 func _on_server_started():
 	print("On Server Started")
-	if not MultiplayerManager.dedicated:
+	if not dedicated:
 		spawn_player(multiplayer.get_unique_id())
+	else:
+		$"../MainMenu".hide()
 
 func _on_client_connected():
 	print("On Client Connected")
@@ -59,7 +61,6 @@ func _on_peer_connected(peer_id: int):
 	print("Peer connected: ", peer_id)
 	if multiplayer.is_server():
 		spawn_player(peer_id)
-
 
 # UI ELEMENTS
 func _on_host_player_pressed() -> void:

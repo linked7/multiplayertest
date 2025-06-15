@@ -101,6 +101,8 @@ shader_params/u_triplanar = null
 shader_params/u_tile_reduction = null
 metadata/_custom_type_script = "uid://crx0wmadrl6ty"
 
+[node name="Players" type="Node3D" parent="."]
+
 [connection signal="pressed" from="MainMenu/Sprite2D/HostPlayer" to="MultiplayerManager" method="_on_host_player_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]
