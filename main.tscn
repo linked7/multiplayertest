@@ -72,7 +72,7 @@ offset_left = -37.0
 offset_top = 58.0
 offset_right = 32.0
 offset_bottom = 101.0
-text = "22223"
+text = "135"
 placeholder_text = "IP Adress"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -102,6 +102,10 @@ shader_params/u_tile_reduction = null
 metadata/_custom_type_script = "uid://crx0wmadrl6ty"
 
 [node name="Players" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://cptns8c6qkk21")
+spawn_path = NodePath("..")
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostPlayer" to="MultiplayerManager" method="_on_host_player_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
