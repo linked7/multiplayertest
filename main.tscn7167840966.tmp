@@ -100,7 +100,7 @@ _spawnable_scenes = PackedStringArray("uid://cptns8c6qkk21")
 spawn_path = NodePath("..")
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -28.826, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -38.3632, 0)
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]

@@ -41,6 +41,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("quit"):
 		$"../".exit_game(name.to_int())
 		get_tree().quit()
+	
+	if Input.is_action_just_pressed("use"):
+		use()
 		
 	# mouse relesing
 	if Input.is_action_just_pressed("camera"):
@@ -97,6 +100,9 @@ func headbob(time) -> Vector3:
 	
 # A player using an entity
 func use():
+	$"..".create_item("apple", global_position)
+	print("My peer ID is:", multiplayer.get_unique_id())
+	print("Am I the server?", multiplayer.is_server())
 	cast_ray()
 
 func cast_ray():
