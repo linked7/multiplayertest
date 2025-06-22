@@ -18,7 +18,7 @@ func create_server(port: int = 22223):
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, MAX_CONNECTIONS)
 	multiplayer.multiplayer_peer = peer
-	var peer_id = peer.get_unique_id()
+	var _peer_id = peer.get_unique_id()
 	multiplayer.peer_connected.connect($"..".spawn_player)
 
 	print("Server started on port %d" % port)

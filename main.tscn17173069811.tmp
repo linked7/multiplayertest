@@ -96,7 +96,7 @@ metadata/_custom_type_script = "uid://crx0wmadrl6ty"
 [node name="Players" type="Node3D" parent="."]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://cptns8c6qkk21", "uid://cikhfrknwfk47")
+_spawnable_scenes = PackedStringArray("uid://cptns8c6qkk21")
 spawn_path = NodePath("..")
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
