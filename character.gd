@@ -100,10 +100,6 @@ func headbob(time) -> Vector3:
 	
 # A player using an entity
 func use():
-	$"..".create_item("apple", global_position)
-	print("My peer ID is:", multiplayer.get_unique_id())
-	print("Am I the server?", multiplayer.is_server())
-	print("Children under MultiplayerSpawner:")
 	cast_ray()
 
 func cast_ray():

@@ -2,6 +2,15 @@ extends Node3D
 
 @export var player_scene: PackedScene = preload("res://character.tscn")
 
+var nextSpawnItem = 0.0
+
+func _process(delta: float) -> void:
+	nextSpawnItem += delta
+	if nextSpawnItem >= 3:
+		var item = create_item("carrot", $SpawnPoint.global_position)
+		print(item.itemID, "Spawned!")
+		nextSpawnItem = 0	
+
 func spawn_player(peer_id: int):
 	print("Main path is:", get_path())
 
@@ -13,10 +22,8 @@ func spawn_player(peer_id: int):
 	player.global_position = $SpawnPoint.global_position
 
 	await get_tree().create_timer(3.0).timeout
-	var carrot = create_item("carrot", player.global_position)
-	print("Spawnplayer My peer ID is:", multiplayer.get_unique_id())
-	print("Am I the server?", multiplayer.is_server())
-	print(carrot.itemID)
+	create_item("carrot", player.global_position)
+	print("Am I the server? ", multiplayer.is_server())
 
 @export var item_defs = {
 	"apple": {
