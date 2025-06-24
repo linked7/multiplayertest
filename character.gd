@@ -116,8 +116,15 @@ func cast_ray():
 	query.exclude = [self]
 
 	var result = space_state.intersect_ray(query)
+	if result and result.collider:
+		return result.collider
 
-	if result:
-		if result.collider.has_method("on_use"):
-			result.collider.on_use( self )
-			pass
+@rpc("any_peer", "call_remote", "reliable")
+func sv_use(item_name: String):
+	print("used (reached server)")
+	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
+	if item and is_instance_valid(item) and multiplayer.is_server():
+		var ply_id: int = multiplayer.get_remote_sender_id()
+		var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
+		item.on_use( ply )
+		print("used (Server)")
