@@ -18,6 +18,7 @@ func spawn_player(peer_id: int):
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
 	get_node("Players").add_child(player)
+	player.hp = 10
 	#player.position = $SpawnPoint.global_position
 
 @export var item_defs = {

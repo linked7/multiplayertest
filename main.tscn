@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=18 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
@@ -14,6 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://cvyx0y0h8qyp8" path="res://terrain_textures/slot1_normal_roughness.png" id="11_getpj"]
 [ext_resource type="Texture2D" uid="uid://hiofdljtyvye" path="res://terrain_textures/slot2_normal_roughness.png" id="12_ryguw"]
 [ext_resource type="Texture2D" uid="uid://c7yyb4hrpjf16" path="res://terrain_textures/slot3_normal_roughness.png" id="13_d13ii"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w48qg"]
+font_size = 24
+font_color = Color(1, 0.25098, 0.909804, 1)
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 ambient_light_source = 3
@@ -69,6 +73,16 @@ offset_right = 32.0
 offset_bottom = 101.0
 text = "22223"
 placeholder_text = "IP Adress"
+metadata/_edit_use_anchors_ = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HPLabel" type="Label" parent="UI"]
+offset_left = 40.0
+offset_top = 601.0
+offset_right = 80.0
+offset_bottom = 624.0
+label_settings = SubResource("LabelSettings_w48qg")
 metadata/_edit_use_anchors_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

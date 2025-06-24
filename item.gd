@@ -12,11 +12,11 @@ func _ready() -> void:
 	$Sprite.texture = load("res://assets/apple.png")
 	#print("Item ready:", name, " - ", get_path())
 
-	pass
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
 
-func on_use( _ply ):
+func on_use( ply: Node ):
+	ply.hp += 1
+	print(ply.hp)
 	queue_free()

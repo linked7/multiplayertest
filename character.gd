@@ -16,7 +16,16 @@ var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
 
-@export var hp: int = 10
+signal hp_changed(new_health)
+
+@export var hp: int = 100:
+	set(value):
+		if hp != value:
+			hp = value
+			emit_signal("hp_changed", value)
+	get():
+		return hp
+
 @export var inventory = []
 
 @onready var head = $Head
@@ -28,6 +37,10 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
+	hp_changed.connect(update_hp_label)
+	
+func update_hp_label(new_health):
+	get_node("/root/Main/UI/HPLabel").text = str(new_health)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -121,10 +134,8 @@ func cast_ray():
 
 @rpc("any_peer", "call_remote", "reliable")
 func sv_use(item_name: String):
-	print("used (reached server)")
 	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
 	if item and is_instance_valid(item) and multiplayer.is_server():
 		var ply_id: int = multiplayer.get_remote_sender_id()
 		var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
 		item.on_use( ply )
-		print("used (Server)")
