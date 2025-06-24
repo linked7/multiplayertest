@@ -3,27 +3,22 @@ extends Node3D
 @export var player_scene: PackedScene = preload("res://character.tscn")
 
 var nextSpawnItem = 0.0
+var is_server_ready: bool = false
 
 func _process(delta: float) -> void:
-	nextSpawnItem += delta
-	if nextSpawnItem >= 3:
-		var item = create_item("carrot", $SpawnPoint.global_position)
-		print(item.itemID, "Spawned!")
-		nextSpawnItem = 0	
+	if multiplayer.is_server() and is_server_ready:
+		nextSpawnItem += delta
+		if nextSpawnItem >= 3:
+			nextSpawnItem = 0
+			create_item("carrot", $SpawnPoint.global_position)
 
 func spawn_player(peer_id: int):
-	print("Main path is:", get_path())
-
 	print("Player Spawned!")
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
-	add_child(player, true)
-	player.global_position = $SpawnPoint.global_position
-
-	await get_tree().create_timer(3.0).timeout
-	create_item("carrot", player.global_position)
-	print("Am I the server? ", multiplayer.is_server())
+	get_node("Players").add_child(player)
+	#player.position = $SpawnPoint.global_position
 
 @export var item_defs = {
 	"apple": {
@@ -38,17 +33,21 @@ func spawn_player(peer_id: int):
 	}
 }
 
+var createdItems = 0
+
 func create_item(itemID: String, pos: Vector3) -> Node:
-	var item_scene = preload("res://item.tscn") # your base item sceccne
+	var item_scene = preload("res://item.tscn")
 	var item = item_scene.instantiate()
 	var source = item_defs[itemID]
 	
+	createdItems += 1
+	item.name = "item_%s" % str(createdItems)
 	item.itemID = itemID
 	item.itemName = source["itemName"]
 	#item.get_node("Sprite").texture = load(source["sprite"])
 	item.set_multiplayer_authority(1)
 	#item.global_rotation_degrees = ang
-	call_deferred("add_child", item, true)
+	get_node("Items").add_child(item)
 	item.position = pos
 	
 	return item

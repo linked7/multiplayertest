@@ -1,18 +1,14 @@
 extends Node
 
 var peer = ENetMultiplayerPeer.new()
-@export var dedicated := false  # toggleable if needed
 
 var input_ip
 var input_port
 const MAX_CONNECTIONS = 20
 
-signal server_started
-signal client_connected
-
 func _ready():
 	pass
-
+	
 # NETWORKING CALLS
 func create_server(port: int = 22223):
 	peer = ENetMultiplayerPeer.new()
@@ -22,15 +18,14 @@ func create_server(port: int = 22223):
 	multiplayer.peer_connected.connect($"..".spawn_player)
 
 	print("Server started on port %d" % port)
-	server_started.emit()
+	get_parent().is_server_ready = true
 
 func join_server(ip: String, port: int = 22223):
 	peer = ENetMultiplayerPeer.new()
 	peer.create_client(ip, port)
 	multiplayer.multiplayer_peer = peer
 	print("Joining server at %s:%d" % [ip, port])
-	client_connected.emit()
-
+	
 # UI ELEMENTS
 func _on_host_server_pressed() -> void:
 	input_port = $"../MainMenu/Sprite2D/InputPort".text.to_int()

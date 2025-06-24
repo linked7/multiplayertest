@@ -16,6 +16,7 @@ var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
 
+@export var hp: int = 10
 @export var inventory = []
 
 @onready var head = $Head
@@ -100,7 +101,11 @@ func headbob(time) -> Vector3:
 	
 # A player using an entity
 func use():
-	cast_ray()
+	var ent = cast_ray()
+	if ent != null and ent.has_method("on_use"):
+		rpc_id(1, "sv_use", ent.name)  # 1 = server
+		print("used")
+		#queue_free()
 
 func cast_ray():
 	var from = camera.global_position
