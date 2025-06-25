@@ -19,16 +19,16 @@ func spawn_player(peer_id: int):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
+	player.get_node("Data").set_multiplayer_authority(1)
 	get_node("Players").add_child(player)
 	
-	hp_changed.emit(player.hp)
+	hp_changed.emit(player.get_node("Data").hp)
 	
 	if( player.is_multiplayer_authority() ):
 		hp_changed.connect(update_hp_label)
 
 func update_hp_label(new_health):
 	get_node("/root/Main/UI/HPLabel").text = str(new_health)
-	#player.position = $SpawnPoint.global_position
 
 @export var item_defs = {
 	"apple": {

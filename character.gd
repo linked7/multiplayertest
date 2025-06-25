@@ -16,8 +16,7 @@ var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
 
-var hp: int = 1
-
+var data: Node 
 @export var inventory = []
 
 @onready var head = $Head
@@ -29,6 +28,7 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
+	data = get_node("Data")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -105,7 +105,6 @@ func use():
 	var ent = cast_ray()
 	if ent != null and ent.has_method("on_use"):
 		rpc_id(1, "sv_use", ent.name)  # 1 = server
-		hp += 1
 		print("used")
 		#queue_free()
 
