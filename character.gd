@@ -103,9 +103,10 @@ func headbob(time) -> Vector3:
 # A player using an entity
 func use():
 	var ent = cast_ray()
+	print("used - CLIENT - " + str(get_node("Data").hp) )
+
 	if ent != null and ent.has_method("on_use"):
 		rpc_id(1, "sv_use", ent.name)  # 1 = server
-		print("used")
 		#queue_free()
 
 func cast_ray():
@@ -122,8 +123,12 @@ func cast_ray():
 
 @rpc("any_peer", "call_remote", "reliable")
 func sv_use(item_name: String):
+	var ply_id: int = multiplayer.get_remote_sender_id()
+	var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
+	print("used - SERVER - " + str(ply.get_node("Data").hp) )
+
 	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
 	if item and is_instance_valid(item) and multiplayer.is_server():
-		var ply_id: int = multiplayer.get_remote_sender_id()
-		var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
+		#var ply_id: int = multiplayer.get_remote_sender_id()
+		#var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
 		item.on_use( ply )

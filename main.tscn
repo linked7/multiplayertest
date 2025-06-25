@@ -83,6 +83,7 @@ offset_left = 40.0
 offset_top = 601.0
 offset_right = 80.0
 offset_bottom = 624.0
+text = "hp"
 label_settings = SubResource("LabelSettings_w48qg")
 script = ExtResource("4_vivmo")
 metadata/_edit_use_anchors_ = true

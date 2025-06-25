@@ -8,5 +8,11 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	
 	if ply != null:
-		text = str(ply.hp)
+		text = str(ply.get_node("Data").hp)
+		ply.get_node("Data").hp += 1
+	else:
+		var ply_id = multiplayer.get_unique_id()
+		ply = get_node_or_null("/root/Main/Players/" + str(ply_id))
+		
