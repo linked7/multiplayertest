@@ -16,15 +16,7 @@ var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
 
-signal hp_changed(new_health)
-
-@export var hp: int = 100:
-	set(value):
-		if hp != value:
-			hp = value
-			emit_signal("hp_changed", value)
-	get():
-		return hp
+var hp: int = 1
 
 @export var inventory = []
 
@@ -37,10 +29,6 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
-	hp_changed.connect(update_hp_label)
-	
-func update_hp_label(new_health):
-	get_node("/root/Main/UI/HPLabel").text = str(new_health)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -117,6 +105,7 @@ func use():
 	var ent = cast_ray()
 	if ent != null and ent.has_method("on_use"):
 		rpc_id(1, "sv_use", ent.name)  # 1 = server
+		hp += 1
 		print("used")
 		#queue_free()
 

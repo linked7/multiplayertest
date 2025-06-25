@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=19 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
 [ext_resource type="Texture2D" uid="uid://btvu00rb52ab5" path="res://assets/menu.png" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://crx0wmadrl6ty" path="res://addons/zylann.hterrain/hterrain.gd" id="3_ycdy4"]
+[ext_resource type="Script" uid="uid://cnw4wbvwyvqu8" path="res://hp_label.gd" id="4_vivmo"]
 [ext_resource type="Resource" uid="uid://cxr84ofrej1as" path="res://terrain_data/data.hterrain" id="4_w48qg"]
 [ext_resource type="Script" uid="uid://dbde1sq4t4ixc" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_vivmo"]
 [ext_resource type="Texture2D" uid="uid://bqv6pck1efrsv" path="res://terrain_textures/slot0_albedo_bump.png" id="6_2cqfq"]
@@ -83,6 +84,7 @@ offset_top = 601.0
 offset_right = 80.0
 offset_bottom = 624.0
 label_settings = SubResource("LabelSettings_w48qg")
+script = ExtResource("4_vivmo")
 metadata/_edit_use_anchors_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -129,3 +131,4 @@ spawn_path = NodePath("..")
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]
+[connection signal="spawned" from="Players/MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

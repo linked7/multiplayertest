@@ -17,6 +17,7 @@ func _process(_delta: float) -> void:
 	pass
 
 func on_use( ply: Node ):
-	ply.hp += 1
+	print("user hp: " + str(ply.hp))
+	ply.hp = ply.hp + 1
 	print(ply.hp)
 	queue_free()

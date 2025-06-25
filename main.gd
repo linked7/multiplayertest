@@ -5,6 +5,8 @@ extends Node3D
 var nextSpawnItem = 0.0
 var is_server_ready: bool = false
 
+signal hp_changed(val)
+
 func _process(delta: float) -> void:
 	if multiplayer.is_server() and is_server_ready:
 		nextSpawnItem += delta
@@ -18,7 +20,14 @@ func spawn_player(peer_id: int):
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
 	get_node("Players").add_child(player)
-	player.hp = 10
+	
+	hp_changed.emit(player.hp)
+	
+	if( player.is_multiplayer_authority() ):
+		hp_changed.connect(update_hp_label)
+
+func update_hp_label(new_health):
+	get_node("/root/Main/UI/HPLabel").text = str(new_health)
 	#player.position = $SpawnPoint.global_position
 
 @export var item_defs = {
@@ -52,3 +61,7 @@ func create_item(itemID: String, pos: Vector3) -> Node:
 	item.position = pos
 	
 	return item
+
+func _on_multiplayer_spawner_spawned(node: Node) -> void:
+	if( node.is_multiplayer_authority() ):
+		hp_changed.connect(update_hp_label)
