@@ -16,7 +16,6 @@ var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
 
-var data: Node 
 @export var inventory = []
 
 @onready var head = $Head
@@ -28,7 +27,6 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
-	data = get_node_or_null("Data")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -125,7 +123,6 @@ func cast_ray():
 func sv_use(item_name: String):
 	var ply_id: int = multiplayer.get_remote_sender_id()
 	var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
-	print("used - SERVER - " + str(ply.get_node("Data").hp) )
 
 	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
 	if item and is_instance_valid(item) and multiplayer.is_server():

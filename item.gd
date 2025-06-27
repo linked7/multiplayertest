@@ -17,7 +17,5 @@ func _process(_delta: float) -> void:
 	pass
 
 func on_use( ply: Node ):
-	var data: Node = ply.get_node("Data")
 	
-	data.hp += 1
 	queue_free()
