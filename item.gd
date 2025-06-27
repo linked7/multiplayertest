@@ -20,5 +20,4 @@ func on_use( ply: Node ):
 	var data: Node = ply.get_node("Data")
 	
 	data.hp += 1
-	print("new user hp = " + str(data.hp))
 	queue_free()

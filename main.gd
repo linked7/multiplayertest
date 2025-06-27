@@ -1,12 +1,9 @@
 extends Node3D
 
 @export var player_scene: PackedScene = preload("res://character.tscn")
-@export var player_data_scene: PackedScene = preload("res://data.tscn")
 
 var nextSpawnItem = 0.0
 var is_server_ready: bool = false
-
-signal hp_changed(val)
 
 func _process(delta: float) -> void:
 	if multiplayer.is_server() and is_server_ready:
@@ -20,20 +17,7 @@ func spawn_player(peer_id: int):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
-	
-	var data = player_data_scene.instantiate()
-	data.name = "Data"
-	
 	get_node("Players").add_child(player)
-	var ply = get_node("Players/" + player.name)
-	ply.add_child(data)
-	data.set_multiplayer_authority(1)
-	hp_changed.emit(player.get_node("Data").hp)
-	
-	if( player.is_multiplayer_authority() ):
-		hp_changed.connect(update_hp_label)
-		
-	
 
 func update_hp_label(new_health):
 	get_node("/root/Main/UI/HPLabel").text = str(new_health)
@@ -69,7 +53,3 @@ func create_item(itemID: String, pos: Vector3) -> Node:
 	item.position = pos
 	
 	return item
-
-func _on_multiplayer_spawner_spawned(node: Node) -> void:
-	if( node.is_multiplayer_authority() ):
-		hp_changed.connect(update_hp_label)

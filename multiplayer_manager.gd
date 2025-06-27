@@ -8,7 +8,7 @@ const MAX_CONNECTIONS = 20
 
 func _ready():
 	pass
-	
+
 # NETWORKING CALLS
 func create_server(port: int = 22223):
 	peer = ENetMultiplayerPeer.new()
