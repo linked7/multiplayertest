@@ -1,6 +1,7 @@
 extends Node3D
 
 @export var player_scene: PackedScene = preload("res://character.tscn")
+@export var player_data_scene: PackedScene = preload("res://data.tscn")
 
 var nextSpawnItem = 0.0
 var is_server_ready: bool = false
@@ -19,9 +20,14 @@ func spawn_player(peer_id: int):
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.set_multiplayer_authority(peer_id)
-	player.get_node("Data").set_multiplayer_authority(1)
-	get_node("Players").add_child(player)
 	
+	var data = player_data_scene.instantiate()
+	data.name = "Data"
+	
+	get_node("Players").add_child(player)
+	var ply = get_node("Players/" + player.name)
+	ply.add_child(data)
+	data.set_multiplayer_authority(1)
 	hp_changed.emit(player.get_node("Data").hp)
 	
 	if( player.is_multiplayer_authority() ):

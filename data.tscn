@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dei55px5518t"]
+
+[ext_resource type="Script" uid="uid://c7rgt78yttysn" path="res://data.gd" id="1_ylaa1"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ylaa1"]
+properties/0/path = NodePath(".:hp")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="PlyData" type="Node3D"]
+script = ExtResource("1_ylaa1")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ylaa1")

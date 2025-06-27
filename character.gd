@@ -28,7 +28,7 @@ func _enter_tree():
 func _ready() -> void:
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.current = is_multiplayer_authority()
-	data = get_node("Data")
+	data = get_node_or_null("Data")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:

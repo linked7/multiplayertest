@@ -10,8 +10,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	
 	if ply != null:
-		text = str(ply.get_node("Data").hp)
-		ply.get_node("Data").hp += 1
+		if( ply.get_node_or_null("Data") != null ):
+			text = str(ply.get_node_or_null("Data").hp)
+			ply.get_node("Data").hp += 1
 	else:
 		var ply_id = multiplayer.get_unique_id()
 		ply = get_node_or_null("/root/Main/Players/" + str(ply_id))
