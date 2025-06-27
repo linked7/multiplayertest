@@ -32,6 +32,8 @@ func spawn_player(peer_id: int):
 	
 	if( player.is_multiplayer_authority() ):
 		hp_changed.connect(update_hp_label)
+		
+	
 
 func update_hp_label(new_health):
 	get_node("/root/Main/UI/HPLabel").text = str(new_health)
