@@ -3,7 +3,7 @@ extends CharacterBody3D
 var speed
 const SPEED_SPRINT = 8.0
 const SPEED_WALK = 4.0
-const JUMP_VELOCITY = 2.25
+const JUMP_VELOCITY = 4.5
 
 const FOV_BASE = 75.0
 const FOV_CHANGE = 1.5
@@ -14,8 +14,6 @@ var gravity = Vector3(0, -9.8, 0) # 9.8 is the default
 var vb_frequency = 8.0
 var vb_amp = 0.04
 var vb_sin = 0.0
-
-@export var inventory = []
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
@@ -28,7 +26,7 @@ func _ready() -> void:
 	if( int( char_id.replace("ply_", ""))  == id ):
 		camera.current = is_multiplayer_authority()
 
-var move_vec := Vector2.ZERO
+var direction := Vector3.ZERO
 var jump: bool = false
 var sprint: bool = false
 var use_net: bool = false
@@ -61,7 +59,7 @@ func _physics_process(delta: float) -> void:
 	else: 
 		speed = SPEED_WALK
 
-	var direction = (head.transform.basis * Vector3(move_vec.x, 0, move_vec.y)).normalized()
+
 	if is_on_floor():
 		if direction:
 			velocity.x = direction.x * speed
@@ -82,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	var target_fov = FOV_BASE + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta * 8.0)
 	
-	move_vec = Vector2.ZERO
+	direction = Vector3.ZERO
 	jump = false
 	sprint = false
 	use_net = false

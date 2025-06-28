@@ -24,15 +24,20 @@ func _process(_delta: float) -> void:
 		if cam:
 			cam.current = true
 			has_camera = true
+			
+	var direction := Vector3.ZERO
+	var move_vec = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
 	if head:
 		yaw = head.rotation.y
+		direction = (head.transform.basis * Vector3(move_vec.x, 0, move_vec.y)).normalized()
 	else:
 		head = get_node_or_null("../../char_" + str(multiplayer.get_unique_id()) + "/Head")
+		
 
 	var input_state = {
-		"move": Input.get_vector("move_left", "move_right", "move_forward", "move_back"),
-		"jump": Input.is_action_just_pressed("move_jump"),
+		"move": direction,
+		"jump": Input.is_action_pressed("move_jump"),
 		"sprint": Input.is_action_pressed("move_sprint"),
 		"yaw": yaw
 	}
@@ -51,7 +56,7 @@ func send_inputs(inputs: Dictionary):
 	var character = get_node("../../char_" + str(id) )
 	
 	if inputs["move"]:
-		character.move_vec = inputs["move"]
+		character.direction = inputs["move"]
 	character.jump = inputs["jump"] or false
 	character.sprint = inputs["sprint"] or false
 	character.get_node("Head").rotation.y = inputs["yaw"]

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 MultiplayerManager="*res://multiplayer_manager.gd"
 
+[dotnet]
+
+project/assembly_name="MultiplayerTest"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/zylann.hterrain/plugin.cfg")
