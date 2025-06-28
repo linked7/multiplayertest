@@ -57,6 +57,8 @@ func send_inputs(inputs: Dictionary):
 	
 	if inputs["move"]:
 		character.direction = inputs["move"]
+	else: #This is nessicary because Vector3.ZERO becomes false when sent over rpc call
+		character.direction = Vector3.ZERO
 	character.jump = inputs["jump"] or false
 	character.sprint = inputs["sprint"] or false
 	character.get_node("Head").rotation.y = inputs["yaw"]

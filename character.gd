@@ -80,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	var target_fov = FOV_BASE + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta * 8.0)
 	
-	direction = Vector3.ZERO
+	#direction = Vector3.ZERO
 	jump = false
 	sprint = false
 	use_net = false
