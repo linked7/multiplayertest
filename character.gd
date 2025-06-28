@@ -91,10 +91,10 @@ func sv_use(item_name: String):
 		item.on_use( ply )
 		
 		
-@onready var spawn_point: Marker3D = $SpawnPoint
+@onready var spawn_point: Marker3D = get_node_or_null("/root/Main/SpawnPoint")
 
 func kill():
-	#position = spawn_point.position
+	position = spawn_point.position
 	hp = 90
 	last_damage = 0
 	
