@@ -102,3 +102,7 @@ func take_damage(dmg: int, _inflictor: Node):
 	last_damage = 0
 	hp -= dmg
 	if hp <= 0: kill()
+
+func on_use(ply):
+	take_damage(20, ply)
+	
