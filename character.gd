@@ -89,3 +89,16 @@ func sv_use(item_name: String):
 		#var ply_id: int = multiplayer.get_remote_sender_id()
 		#var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
 		item.on_use( ply )
+		
+		
+@onready var spawn_point: Marker3D = $SpawnPoint
+
+func kill():
+	#position = spawn_point.position
+	hp = 90
+	last_damage = 0
+	
+func take_damage(dmg: int, _inflictor: Node):
+	last_damage = 0
+	hp -= dmg
+	if hp <= 0: kill()
