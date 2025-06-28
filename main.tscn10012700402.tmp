@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=20 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
@@ -20,9 +20,6 @@
 [sub_resource type="LabelSettings" id="LabelSettings_w48qg"]
 font_size = 24
 font_color = Color(1, 0.25098, 0.909804, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cqfq"]
-bg_color = Color(0.957262, 0.625803, 0.811082, 1)
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 ambient_light_source = 3
@@ -81,7 +78,6 @@ placeholder_text = "IP Adress"
 metadata/_edit_use_anchors_ = true
 
 [node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="HPLabel" type="Label" parent="UI"]
 offset_left = 40.0
@@ -92,13 +88,6 @@ text = "hp"
 label_settings = SubResource("LabelSettings_w48qg")
 script = ExtResource("4_vivmo")
 metadata/_edit_use_anchors_ = true
-
-[node name="ProgressBar" type="ProgressBar" parent="UI"]
-offset_left = 16.0
-offset_top = 605.0
-offset_right = 377.0
-offset_bottom = 632.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_2cqfq")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0xm2m")

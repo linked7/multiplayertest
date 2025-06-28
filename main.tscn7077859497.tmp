@@ -1,10 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=18 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
 [ext_resource type="Texture2D" uid="uid://btvu00rb52ab5" path="res://assets/menu.png" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://crx0wmadrl6ty" path="res://addons/zylann.hterrain/hterrain.gd" id="3_ycdy4"]
-[ext_resource type="Script" uid="uid://cyd6nu8x8fvtp" path="res://hp_label.gd" id="4_vivmo"]
 [ext_resource type="Resource" uid="uid://cxr84ofrej1as" path="res://terrain_data/data.hterrain" id="4_w48qg"]
 [ext_resource type="Script" uid="uid://dbde1sq4t4ixc" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_vivmo"]
 [ext_resource type="Texture2D" uid="uid://bqv6pck1efrsv" path="res://terrain_textures/slot0_albedo_bump.png" id="6_2cqfq"]
@@ -15,14 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://cvyx0y0h8qyp8" path="res://terrain_textures/slot1_normal_roughness.png" id="11_getpj"]
 [ext_resource type="Texture2D" uid="uid://hiofdljtyvye" path="res://terrain_textures/slot2_normal_roughness.png" id="12_ryguw"]
 [ext_resource type="Texture2D" uid="uid://c7yyb4hrpjf16" path="res://terrain_textures/slot3_normal_roughness.png" id="13_d13ii"]
-[ext_resource type="Script" uid="uid://dq5vegqfw3foh" path="res://player_functions.gd" id="16_2cqfq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_w48qg"]
 font_size = 24
 font_color = Color(1, 0.25098, 0.909804, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cqfq"]
-bg_color = Color(0.957262, 0.625803, 0.811082, 1)
 
 [sub_resource type="Environment" id="Environment_0xm2m"]
 ambient_light_source = 3
@@ -81,7 +76,6 @@ placeholder_text = "IP Adress"
 metadata/_edit_use_anchors_ = true
 
 [node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="HPLabel" type="Label" parent="UI"]
 offset_left = 40.0
@@ -90,15 +84,7 @@ offset_right = 80.0
 offset_bottom = 624.0
 text = "hp"
 label_settings = SubResource("LabelSettings_w48qg")
-script = ExtResource("4_vivmo")
 metadata/_edit_use_anchors_ = true
-
-[node name="ProgressBar" type="ProgressBar" parent="UI"]
-offset_left = 16.0
-offset_top = 605.0
-offset_right = 377.0
-offset_bottom = 632.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_2cqfq")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_0xm2m")
@@ -141,9 +127,6 @@ gizmo_extents = 2.14
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Items"]
 _spawnable_scenes = PackedStringArray("uid://cikhfrknwfk47")
 spawn_path = NodePath("..")
-
-[node name="PlayerFuncs" type="Node3D" parent="."]
-script = ExtResource("16_2cqfq")
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]
