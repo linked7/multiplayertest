@@ -15,14 +15,15 @@ var sprinting := false
 var mouse_delta := Vector2.ZERO
 var yaw: float = 0.0
 
-var has_camera := false
+var has_camera = false
 var head: Node
+var character: Node
 
 func _ready() -> void:
+	PlyFuncs = get_node("/root/Main/PlayerFuncs")
 	pass
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var id: int = multiplayer.get_unique_id()
 	
 	if id == 1:
@@ -30,9 +31,10 @@ func _process(_delta: float) -> void:
 		
 	if not has_camera:
 		var cam: Node = get_node_or_null("../../char_" + str(id) + "/Head/Camera3D")
+		character = get_node_or_null("../../char_" + str(id))
 		if cam:
 			cam.current = true
-			has_camera = true
+			has_camera = cam
 			
 	var direction := Vector3.ZERO
 	var move_vec = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
