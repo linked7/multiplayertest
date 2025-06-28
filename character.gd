@@ -30,6 +30,14 @@ func _ready() -> void:
 	
 	if( int( char_id.replace("ply_", ""))  == id ):
 		camera.current = is_multiplayer_authority()
+		
+func _process(delta: float) -> void:
+	if last_damage < HP_TIME_UNTIL_REGEN:
+		last_damage += delta
+	elif hp < HP_MAX:
+		hp += 1
+		last_damage = HP_TIME_UNTIL_REGEN - HP_DELAY_BETWEEN_REGEN
+		emit_signal("hp_changed")
 
 func _physics_process(delta: float) -> void:
 	
