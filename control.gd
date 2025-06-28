@@ -60,6 +60,20 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_released("camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	# FOV
+	if has_camera:
+		var movement_strength = clamp(move_vec.length(), 0.0, 1.0)  # length of input vector
+		var target_fov = FOV_BASE + FOV_CHANGE * movement_strength
+		has_camera.fov = lerp(has_camera.fov, target_fov, delta * 8.0)
+		vb_sin += delta * move_vec.length() * float(character.is_on_floor())
+		has_camera.transform.origin = headbob(vb_sin)
+
+func headbob(time) -> Vector3:
+	var pos = Vector3.ZERO
+	pos.y = sin(time * vb_frequency) * vb_amp
+	pos.x = cos(time * vb_frequency / 2) * vb_amp
+	return pos
+	
 
 @rpc("any_peer", "call_remote", "unreliable")
 func send_inputs(inputs: Dictionary):
