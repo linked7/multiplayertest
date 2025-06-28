@@ -29,7 +29,6 @@ func _ready() -> void:
 var direction := Vector3.ZERO
 var jump: bool = false
 var sprint: bool = false
-var use_net: bool = false
 
 func _physics_process(delta: float) -> void:
 	
@@ -41,9 +40,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("quit"):
 		$"../".exit_game(name.to_int())
 		get_tree().quit()
-	
-	if use_net:
-		use()
 
 	# Add the gravity.
 	if not is_on_floor():
@@ -83,7 +79,6 @@ func _physics_process(delta: float) -> void:
 	#direction = Vector3.ZERO
 	jump = false
 	sprint = false
-	use_net = false
 
 	move_and_slide()
 	
