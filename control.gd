@@ -1,5 +1,14 @@
 extends Node3D
 
+var PlyFuncs: Node
+
+const FOV_BASE = 75.0
+const FOV_CHANGE = 1.5
+const USE_RANGE = 2.5
+var vb_frequency = 8.0
+var vb_amp = 0.04
+var vb_sin = 0.0
+
 var input_vector := Vector2.ZERO
 var jump_pressed := false
 var sprinting := false
