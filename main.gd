@@ -1,6 +1,7 @@
 extends Node3D
 
-@export var player_scene: PackedScene = preload("res://character.tscn")
+@export var player_scene: PackedScene = preload("res://player.tscn")
+@export var character_scene: PackedScene = preload("res://character.tscn")
 
 var nextSpawnItem = 0.0
 var is_server_ready: bool = false
@@ -15,9 +16,14 @@ func _process(delta: float) -> void:
 func spawn_player(peer_id: int):
 	print("Player Spawned!")
 	var player = player_scene.instantiate()
-	player.name = str(peer_id)
+	player.name = str("ply_", peer_id)
 	player.set_multiplayer_authority(peer_id)
 	get_node("Players").add_child(player)
+	
+	var character = character_scene.instantiate()
+	character.name = str("char_", peer_id)
+	character.set_multiplayer_authority(1)
+	get_node("Players").add_child(character)
 
 @export var item_defs = {
 	"apple": {
