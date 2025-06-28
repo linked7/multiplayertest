@@ -1,19 +1,24 @@
 extends CharacterBody3D
 
+var PlyFuncs: Node
+
 var speed
 const SPEED_SPRINT = 8.0
 const SPEED_WALK = 4.0
 const JUMP_VELOCITY = 4.5
-
-const FOV_BASE = 75.0
-const FOV_CHANGE = 1.5
-
-const USE_RANGE = 2.0
-
 var gravity = Vector3(0, -9.8, 0) # 9.8 is the default
-var vb_frequency = 8.0
-var vb_amp = 0.04
-var vb_sin = 0.0
+
+@export var hp: int = 90
+@export var last_damage = 0.0
+const HP_MAX = 100
+const HP_TIME_UNTIL_REGEN = 2
+const HP_DELAY_BETWEEN_REGEN = 0.2
+
+var direction := Vector3.ZERO
+var jump: bool = false
+var sprint: bool = false
+
+signal hp_changed
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
