@@ -60,6 +60,12 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_released("camera"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
+	if Input.is_action_just_pressed("use"):
+		var hit: Node = cast_ray()
+		if hit:
+			rpc_id(1, "sv_use", hit.get_path())
+			
 	# FOV
 	if has_camera:
 		var movement_strength = clamp(move_vec.length(), 0.0, 1.0)  # length of input vector
@@ -74,11 +80,24 @@ func headbob(time) -> Vector3:
 	pos.x = cos(time * vb_frequency / 2) * vb_amp
 	return pos
 	
+@rpc("any_peer", "call_remote", "unreliable")
+func sv_use(ent_path: NodePath):
+	var ent := get_node_or_null(ent_path)
+	if not (ent or ent.on_use): return
+	character = PlyFuncs.get_char_from_id(multiplayer.get_remote_sender_id())
+
+	if not character:
+		return
+	var char_pos: Vector3 = character.get_node("Head").global_position
+	var distance = char_pos.distance_to(ent.global_position)
+	
+	if distance > USE_RANGE: return
+	ent.on_use(character)
 
 @rpc("any_peer", "call_remote", "unreliable")
 func send_inputs(inputs: Dictionary):
 	var id: int = multiplayer.get_remote_sender_id()
-	var character = get_node("../../char_" + str(id) )
+	character = get_node_or_null("../../char_" + str(id) )
 	
 	if inputs["move"]:
 		character.direction = inputs["move"]
@@ -87,3 +106,23 @@ func send_inputs(inputs: Dictionary):
 	character.jump = inputs["jump"] or false
 	character.sprint = inputs["sprint"] or false
 	character.get_node("Head").rotation.y = inputs["yaw"]
+
+func cast_ray():
+	if !has_camera: return
+	var from = has_camera.global_position
+	var to = from + has_camera.global_transform.basis.z * -USE_RANGE  # negative Z is forward
+
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [self]
+
+	var result = space_state.intersect_ray(query)
+	if result and result.collider:
+		return result.collider
+		
+func use():
+	var ent = cast_ray()
+
+	if ent != null and ent.has_method("on_use"):
+		rpc_id(1, "sv_use", ent.get_path)  # 1 = server
+		#queue_free()
