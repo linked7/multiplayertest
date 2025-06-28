@@ -23,6 +23,7 @@ func spawn_player(peer_id: int):
 	var character = character_scene.instantiate()
 	character.name = str("char_", peer_id)
 	character.set_multiplayer_authority(1)
+	character.get_node("Head").set_multiplayer_authority(peer_id)
 	get_node("Players").add_child(character)
 
 @export var item_defs = {

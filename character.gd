@@ -4,7 +4,6 @@ var speed
 const SPEED_SPRINT = 8.0
 const SPEED_WALK = 4.0
 const JUMP_VELOCITY = 2.25
-const SENSITIVITY = 0.003
 
 const FOV_BASE = 75.0
 const FOV_CHANGE = 1.5
@@ -33,17 +32,12 @@ var move_vec := Vector2.ZERO
 var jump: bool = false
 var sprint: bool = false
 var use_net: bool = false
-var mouse_delta := Vector2.ZERO
 
 func _physics_process(delta: float) -> void:
 	
 	if not is_multiplayer_authority():
 		return
-		
-	head.rotate_y(-mouse_delta.x * SENSITIVITY)
-	head.rotate_x(-mouse_delta.y * SENSITIVITY)
 	
-	var pitch = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 	#camera.rotation.x = pitch
 	
 	if Input.is_action_just_pressed("quit"):
@@ -92,7 +86,6 @@ func _physics_process(delta: float) -> void:
 	jump = false
 	sprint = false
 	use_net = false
-	mouse_delta = Vector2.ZERO
 
 	move_and_slide()
 	

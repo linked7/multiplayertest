@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cptns8c6qkk21"]
+[gd_scene load_steps=6 format=3 uid="uid://cptns8c6qkk21"]
 
 [ext_resource type="Script" uid="uid://pnlhqi8a7wbt" path="res://character.gd" id="1_pjt0s"]
+[ext_resource type="Script" uid="uid://dmkix76o4unt1" path="res://head.gd" id="2_pjt0s"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vu45j"]
 
@@ -13,9 +14,6 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Head:rotation")
-properties/2/spawn = true
-properties/2/replication_mode = 1
 
 [node name="Character" type="CharacterBody3D"]
 script = ExtResource("1_pjt0s")
@@ -28,6 +26,7 @@ shape = SubResource("CapsuleShape3D_glpr6")
 
 [node name="Head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("2_pjt0s")
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 
