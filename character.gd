@@ -62,7 +62,6 @@ func _physics_process(delta: float) -> void:
 	else: 
 		speed = SPEED_WALK
 
-
 	if is_on_floor():
 		if direction:
 			velocity.x = direction.x * speed
@@ -82,13 +81,13 @@ func _physics_process(delta: float) -> void:
 @rpc("any_peer", "call_remote", "reliable")
 func sv_use(item_name: String):
 	var ply_id: int = multiplayer.get_remote_sender_id()
-	var ply: Node = PlyFuncs.get_ply_from_id(ply_id)
+	var charac: Node = PlyFuncs.get_char_from_id(ply_id)
 
 	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
 	if item and is_instance_valid(item) and multiplayer.is_server():
 		#var ply_id: int = multiplayer.get_remote_sender_id()
 		#var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
-		item.on_use( ply )
+		item.on_use( charac )
 		
 		
 @onready var spawn_point: Marker3D = get_node_or_null("/root/Main/SpawnPoint")
@@ -98,11 +97,13 @@ func kill():
 	hp = 90
 	last_damage = 0
 	
+func heal(amt: int):
+	hp = clamp( hp + amt, 0, HP_MAX )
+	
 func take_damage(dmg: int, _inflictor: Node):
 	last_damage = 0
-	hp -= dmg
+	hp = clamp( hp - dmg, 0, HP_MAX )
 	if hp <= 0: kill()
 
-func on_use(ply):
-	take_damage(20, ply)
-	
+func on_use(char):
+	take_damage(20, char)
