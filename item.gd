@@ -16,6 +16,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
-func on_use( _ply: Node ):
+func on_use( character: Node ):
+	character.heal(20)
+	
 	
 	queue_free()
