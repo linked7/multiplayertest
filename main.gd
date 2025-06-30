@@ -25,6 +25,8 @@ func spawn_player(peer_id: int):
 	character.set_multiplayer_authority(1)
 	character.get_node("Head").set_multiplayer_authority(peer_id)
 	get_node("Players").add_child(character)
+	character.add_to_group("characters")
+
 
 @export var item_defs = {
 	"apple": {
