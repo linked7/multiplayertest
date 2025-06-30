@@ -116,6 +116,17 @@ func sv_shoot(target: Vector3, delta):
 	var radius = 5.0
 	explode( pos, radius, 30, character)
 
+func explode(pos: Vector3, radius: float, damage: int, inflictor: Character ):
+	var victims = PlyFuncs.get_chars_in_sphere( pos, radius )
+	print("Bang!")
+	for chara: Character in victims:
+		var dist: float = chara.position.distance_to( pos )
+		var diff: float = clampf(dist / radius, 0, 1 ) 
+		print("Diff: " + str(diff))
+		damage = round( damage * (1 - diff ) )
+		print("damage : " + str(damage))
+		chara.take_damage( damage, inflictor, pos )
+	
 @rpc("any_peer", "call_remote", "unreliable")
 func sv_use(ent_path: NodePath):
 	var ent := get_node_or_null(ent_path)
