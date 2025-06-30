@@ -1,5 +1,7 @@
 extends Node3D
 
+class_name Controller
+
 var PlyFuncs: Node
 
 const FOV_BASE = 75.0
@@ -18,6 +20,12 @@ var yaw: float = 0.0
 var has_camera = false
 var head: Node
 var character: Node
+
+const SHOOT_COOLDOWN = 1.0
+var last_shoot = 0
+
+const RAY_ENT = 0
+const RAY_POS = 1
 
 func _ready() -> void:
 	PlyFuncs = get_node("/root/Main/PlayerFuncs")
@@ -62,10 +70,19 @@ func _process(delta: float) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		
 	if Input.is_action_just_pressed("use"):
-		var hit: Node = cast_ray()
-		if hit:
+		var hit = cast_ray(RAY_ENT)
+		print(type_string(typeof(hit)))
+		if hit and type_string(typeof(hit)):
 			rpc_id(1, "sv_use", hit.get_path())
-			
+	
+	if Input.is_action_just_pressed("attack"):
+		last_shoot += delta
+		var hit = cast_ray(RAY_POS)
+		if hit:
+			last_shoot = 0.0
+			rpc_id(1, "sv_shoot", hit, delta)
+			print("Sent")
+	
 	# FOV
 	if has_camera:
 		var movement_strength = clamp(move_vec.length(), 0.0, 1.0)  # length of input vector
@@ -80,6 +97,25 @@ func headbob(time) -> Vector3:
 	pos.x = cos(time * vb_frequency / 2) * vb_amp
 	return pos
 	
+@rpc("any_peer", "call_remote", "unreliable")
+func sv_shoot(target: Vector3, delta):
+	last_shoot += delta
+	#if last_shoot < SHOOT_COOLDOWN: return
+	last_shoot = 0.0
+	character = PlyFuncs.get_char_from_id(multiplayer.get_remote_sender_id())
+	var from = character.get_node("Head").position
+	var to = target
+	
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [character]
+
+	var result = space_state.intersect_ray(query)
+	var pos = result.get("position", null)
+	if not ( result or pos): return
+	var radius = 5.0
+	explode( pos, radius, 30, character)
+
 @rpc("any_peer", "call_remote", "unreliable")
 func sv_use(ent_path: NodePath):
 	var ent := get_node_or_null(ent_path)
@@ -107,22 +143,36 @@ func send_inputs(inputs: Dictionary):
 	character.sprint = inputs["sprint"] or false
 	character.get_node("Head").rotation.y = inputs["yaw"]
 
-func cast_ray():
+func cast_ray(type):
 	if !has_camera: return
 	var from = has_camera.global_position
 	var to = from + has_camera.global_transform.basis.z * -USE_RANGE  # negative Z is forward
+	if type == RAY_POS:
+		print("Using pos")
+		to = from + has_camera.global_transform.basis.z * -500
 
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(from, to)
 	query.exclude = [self]
 
 	var result = space_state.intersect_ray(query)
-	if result and result.collider:
-		return result.collider
-		
+	print("From:", from)
+	print("To:", to)
+	print("Direction:", to - from, " Length:", (to - from).length())
+
+	if result:
+		print("Arg")
+		var ent = result.get("collider", null)
+		var pos = result.get("position", null)
+		match type:
+			RAY_ENT:
+				return ent
+			RAY_POS:
+				return pos
+	return
+	
 func use():
-	var ent = cast_ray()
+	var ent = cast_ray(RAY_ENT)
 
 	if ent != null and ent.has_method("on_use"):
-		rpc_id(1, "sv_use", ent.get_path)  # 1 = server
-		#queue_free()
+		rpc_id(1, "sv_use", ent.get_path)
