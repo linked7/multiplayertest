@@ -88,8 +88,8 @@ func heal(amt: int):
 func take_damage(dmg: int, _inflictor: Node, origin: Vector3):
 	last_damage = 0
 	hp = clamp( hp - dmg, 0, HP_MAX )
-	var direction = (position - origin).normalized()
-	velocity += direction * ( dmg / 2 )
+	var dir = (position - origin).normalized()
+	velocity += dir * ( round(dmg) / 2 )
 	if hp <= 0: kill()
 
 func on_use(chara):
