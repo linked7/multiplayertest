@@ -90,5 +90,5 @@ func take_damage(dmg: int, _inflictor: Node):
 	hp = clamp( hp - dmg, 0, HP_MAX )
 	if hp <= 0: kill()
 
-func on_use(char):
-	take_damage(20, char)
+func on_use(chara):
+	take_damage(15, chara, chara.position)
