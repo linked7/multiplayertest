@@ -139,7 +139,7 @@ gizmo_extents = 2.14
 [node name="Items" type="Node3D" parent="."]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Items"]
-_spawnable_scenes = PackedStringArray("uid://cikhfrknwfk47")
+_spawnable_scenes = PackedStringArray("uid://cikhfrknwfk47", "uid://bio1gm1yfq6ap")
 spawn_path = NodePath("..")
 
 [node name="PlayerFuncs" type="Node3D" parent="."]
