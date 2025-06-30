@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+class_name Character
+
 var PlyFuncs: Node
 
 var speed
@@ -13,7 +15,9 @@ var gravity = Vector3(0, -9.8, 0) # 9.8 is the default
 const HP_MAX = 100
 const HP_TIME_UNTIL_REGEN = 2
 const HP_DELAY_BETWEEN_REGEN = 0.2
+const SHOOT_COOLDOWN = 1.0
 
+var last_shot: bool = 0.0
 var direction := Vector3.ZERO
 var jump: bool = false
 var sprint: bool = false
@@ -43,17 +47,11 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_multiplayer_authority():
 		return
-		
-	if Input.is_action_just_pressed("quit"):
-		$"../".exit_game(name.to_int())
-		get_tree().quit()
-
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += gravity * delta
-
-	# Handle jump.
-	if jump and is_on_floor():
+	elif jump:
 		velocity.y = JUMP_VELOCITY
 		
 	#Handle Sprint
@@ -65,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		if direction:
 			velocity.x = direction.x * speed
-			velocity.z = direction.z * speed 
+			velocity.z = direction.z * speed
 		else:
 			velocity.x = 0.0
 			velocity.z = 0.0
@@ -75,28 +73,15 @@ func _physics_process(delta: float) -> void:
 	
 	#direction = Vector3.ZERO
 	jump = false
-
 	move_and_slide()
 
-@rpc("any_peer", "call_remote", "reliable")
-func sv_use(item_name: String):
-	var ply_id: int = multiplayer.get_remote_sender_id()
-	var charac: Node = PlyFuncs.get_char_from_id(ply_id)
-
-	var item: Node = get_node_or_null("/root/Main/Items/" + str(item_name))
-	if item and is_instance_valid(item) and multiplayer.is_server():
-		#var ply_id: int = multiplayer.get_remote_sender_id()
-		#var ply: Node = get_node_or_null("/root/Main/Players/" + str(ply_id))
-		item.on_use( charac )
-		
-		
 @onready var spawn_point: Marker3D = get_node_or_null("/root/Main/SpawnPoint")
 
 func kill():
 	position = spawn_point.position
 	hp = 90
 	last_damage = 0
-	
+
 func heal(amt: int):
 	hp = clamp( hp + amt, 0, HP_MAX )
 	
