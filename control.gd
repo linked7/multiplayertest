@@ -80,8 +80,8 @@ func _process(delta: float) -> void:
 		var hit = cast_ray(RAY_POS)
 		if hit:
 			last_shoot = 0.0
-			rpc_id(1, "sv_shoot", hit, delta)
-			print("Sent")
+			rpc_id(1, "sv_shoot", hit)
+			print("Requesting boom")
 	
 	# FOV
 	if has_camera:
@@ -98,8 +98,7 @@ func headbob(time) -> Vector3:
 	return pos
 	
 @rpc("any_peer", "call_remote", "unreliable")
-func sv_shoot(target: Vector3, delta):
-	last_shoot += delta
+func sv_shoot(target: Vector3):
 	#if last_shoot < SHOOT_COOLDOWN: return
 	last_shoot = 0.0
 	character = PlyFuncs.get_char_from_id(multiplayer.get_remote_sender_id())
@@ -114,17 +113,23 @@ func sv_shoot(target: Vector3, delta):
 	var pos = result.get("position", null)
 	if not ( result or pos): return
 	var radius = 5.0
-	explode( pos, radius, 30, character)
+	explode( pos, radius, 40, character)
+	print("Boom accepted")
+	
+var explosion_scene: PackedScene = load("res://effect_explosion.tscn")
 
 func explode(pos: Vector3, radius: float, damage: int, inflictor: Character ):
 	var victims = PlyFuncs.get_chars_in_sphere( pos, radius )
-	print("Bang!")
+	var effect = explosion_scene.instantiate()
+	
+	effect.position = pos
+	get_node("../../../Items").add_child(effect, true)
+	effect.get_node("GPUParticles3D").emitting = true
+
 	for chara: Character in victims:
 		var dist: float = chara.position.distance_to( pos )
 		var diff: float = clampf(dist / radius, 0, 1 ) 
-		print("Diff: " + str(diff))
 		damage = round( damage * (1 - diff ) )
-		print("damage : " + str(damage))
 		chara.take_damage( damage, inflictor, pos )
 	
 @rpc("any_peer", "call_remote", "unreliable")
@@ -159,7 +164,6 @@ func cast_ray(type):
 	var from = has_camera.global_position
 	var to = from + has_camera.global_transform.basis.z * -USE_RANGE  # negative Z is forward
 	if type == RAY_POS:
-		print("Using pos")
 		to = from + has_camera.global_transform.basis.z * -500
 
 	var space_state = get_world_3d().direct_space_state
@@ -167,12 +171,7 @@ func cast_ray(type):
 	query.exclude = [self]
 
 	var result = space_state.intersect_ray(query)
-	print("From:", from)
-	print("To:", to)
-	print("Direction:", to - from, " Length:", (to - from).length())
-
 	if result:
-		print("Arg")
 		var ent = result.get("collider", null)
 		var pos = result.get("position", null)
 		match type:
