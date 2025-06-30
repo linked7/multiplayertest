@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://bio1gm1yfq6ap"]
+
+[sub_resource type="Curve" id="Curve_mvk07"]
+_data = [Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_lsjnx"]
+curve = SubResource("Curve_mvk07")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mvk07"]
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0.891417, 0.507235, 1)
+alpha_curve = SubResource("CurveTexture_lsjnx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lsjnx"]
+transparency = 1
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.792157, 0, 0.666667)
+emission_enabled = true
+emission = Color(1, 0.780392, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_30wje"]
+material = SubResource("StandardMaterial3D_lsjnx")
+radius = 5.0
+height = 10.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mvk07"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("GPUParticles3D:emitting")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="EffectExplosion" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_mvk07")
+draw_pass_1 = SubResource("SphereMesh_30wje")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mvk07")
