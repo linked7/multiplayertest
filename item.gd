@@ -19,5 +19,4 @@ func _process(_delta: float) -> void:
 func on_use( character: Node ):
 	character.heal(20)
 	
-	
 	queue_free()
