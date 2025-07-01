@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 		
 	if last_hp != character.hp:
 		value = character.hp
-		last_hp = character.hp
+		#last_hp = character.hpc
 		show()
 
 
