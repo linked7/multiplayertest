@@ -78,6 +78,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		last_shoot += delta
 		var hit = cast_ray(RAY_POS)
+		SignalBus.emit_signal("attack_clicked")
+		
 		if hit:
 			last_shoot = 0.0
 			rpc_id(1, "sv_shoot", hit)

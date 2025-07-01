@@ -1,14 +1,12 @@
-extends Label
+extends ProgressBar
 
 var PlyFuncs: Node
 var character: Node
 var last_hp := 0
-@onready var progress_bar: ProgressBar = $"../ProgressBar"
-
-# Called when the node enters the scene tree for the first time.
 
 func _ready():
 	PlyFuncs = get_node("/root/Main/PlayerFuncs")
+	SignalBus.attack_clicked.connect(self._hide_hp_label)
 	
 func _process(_delta: float) -> void:
 	if multiplayer.is_server(): return
@@ -18,5 +16,10 @@ func _process(_delta: float) -> void:
 		return
 		
 	if last_hp != character.hp:
-		text = str(character.hp)
-		progress_bar.value = character.hp
+		value = character.hp
+		last_hp = character.hp
+		show()
+
+
+func _hide_hp_label():
+	hide()
