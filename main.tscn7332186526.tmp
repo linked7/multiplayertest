@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://d0w5ohhabd8kp"]
+[gd_scene load_steps=20 format=3 uid="uid://d0w5ohhabd8kp"]
 
 [ext_resource type="Script" uid="uid://cwrtp3ny6bhd6" path="res://multiplayer_manager.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c4nnu0kp38dny" path="res://main.gd" id="1_w48qg"]
@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://hiofdljtyvye" path="res://terrain_textures/slot2_normal_roughness.png" id="12_ryguw"]
 [ext_resource type="Texture2D" uid="uid://c7yyb4hrpjf16" path="res://terrain_textures/slot3_normal_roughness.png" id="13_d13ii"]
 [ext_resource type="Script" uid="uid://dq5vegqfw3foh" path="res://player_functions.gd" id="16_2cqfq"]
-[ext_resource type="Script" uid="uid://xtheaclgg2vl" path="res://signal_bus.gd" id="17_yaehf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cqfq"]
 bg_color = Color(0.957262, 0.625803, 0.811082, 1)
@@ -132,9 +131,6 @@ spawn_path = NodePath("..")
 
 [node name="PlayerFuncs" type="Node3D" parent="."]
 script = ExtResource("16_2cqfq")
-
-[node name="SignalBus" type="Node3D" parent="."]
-script = ExtResource("17_yaehf")
 
 [connection signal="pressed" from="MainMenu/Sprite2D/HostServer" to="MultiplayerManager" method="_on_host_server_pressed"]
 [connection signal="pressed" from="MainMenu/Sprite2D/Connect" to="MultiplayerManager" method="_on_connect_pressed"]
