@@ -52,7 +52,6 @@ func _process(delta: float) -> void:
 		direction = (head.transform.basis * Vector3(move_vec.x, 0, move_vec.y)).normalized()
 	else:
 		head = get_node_or_null("../../char_" + str(multiplayer.get_unique_id()) + "/Head")
-		
 
 	var input_state = {
 		"move": direction,
@@ -83,7 +82,7 @@ func _process(delta: float) -> void:
 		if hit:
 			last_shoot = 0.0
 			rpc_id(1, "sv_shoot", hit)
-			print("Requesting boom")
+			print("-------------------\nRequesting boom")
 	
 	# FOV
 	if has_camera:
@@ -98,8 +97,10 @@ func headbob(time) -> Vector3:
 	pos.y = sin(time * vb_frequency) * vb_amp
 	pos.x = cos(time * vb_frequency / 2) * vb_amp
 	return pos
-	
-@rpc("any_peer", "call_remote", "unreliable")
+
+var laser_scene: PackedScene = preload("res://effect_laser.tscn")
+
+@rpc("any_peer", "call_remote", "reliable")
 func sv_shoot(target: Vector3):
 	#if last_shoot < SHOOT_COOLDOWN: return
 	last_shoot = 0.0
@@ -118,12 +119,17 @@ func sv_shoot(target: Vector3):
 	explode( pos, radius, 40, character)
 	print("Boom accepted")
 	
-var explosion_scene: PackedScene = load("res://effect_explosion.tscn")
+	var laser = laser_scene.instantiate()
+	laser.position = from
+	laser.end = to
+	
+	get_node("../../../Items").add_child(laser, true)
+
+var explosion_scene: PackedScene = preload("res://effect_explosion.tscn")
 
 func explode(pos: Vector3, radius: float, damage: int, inflictor: Character ):
 	var victims = PlyFuncs.get_chars_in_sphere( pos, radius )
 	var effect = explosion_scene.instantiate()
-	
 	effect.position = pos
 	get_node("../../../Items").add_child(effect, true)
 	effect.get_node("GPUParticles3D").emitting = true
